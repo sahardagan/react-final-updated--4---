@@ -19,6 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditCardForm from "./editCard/EditCardForm";
 import CardDetailsDialog from "../components/card-details/CardDetails";
 import { Card } from "../interfaces/cards";
+import { toast } from "react-toastify";
 
 const MyCards: React.FC = () => {
   const { fetchMyCards, cards, deleteCard } = useCardContext();
@@ -44,6 +45,15 @@ const MyCards: React.FC = () => {
     setDetailsOpen(true);
   };
 
+  const handleDelete = async (cardId: string, bizNumber: number) => {
+    try {
+      await deleteCard(cardId, bizNumber);
+      toast.success("Card deleted successfully!");
+    } catch (error) {
+      toast.error("Failed to delete the card.");
+    }
+  };
+
   useEffect(() => {
     fetchMyCards();
   }, []);
@@ -63,7 +73,7 @@ const MyCards: React.FC = () => {
           {cards &&
             cards.map((data, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
-                <MuiCard sx={{ maxWidth: 345, margin: 2 }}>
+                <MuiCard sx={{ maxWidth: 345, margin: "auto" }}>
                   <CardMedia
                     component="img"
                     height="140"
@@ -74,6 +84,12 @@ const MyCards: React.FC = () => {
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                       {data.title}
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {data.subtitle}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {data.description}
                     </Typography>
                   </CardContent>
                   <CardActions>
@@ -91,9 +107,7 @@ const MyCards: React.FC = () => {
                     </IconButton>
                     <IconButton
                       aria-label="delete"
-                      onClick={() =>
-                        data._id && deleteCard(data._id, data.bizNumber)
-                      }
+                      onClick={() => handleDelete(data._id, data.bizNumber)}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -107,7 +121,7 @@ const MyCards: React.FC = () => {
         sx={{
           position: "fixed",
           bottom: 16,
-          left: 16,
+          right: 16,
         }}
       >
         <Button variant="contained" color="primary" onClick={handleOpen}>

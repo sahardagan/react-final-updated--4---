@@ -5,12 +5,14 @@ import Navbar from "./components/nav/Navbar";
 import Home from "./pages/home/Home";
 import MyCards from "./components/MyCards";
 import ProfilePage from "./pages/profile/ProfilePage";
-import EditProfilePage from "./components/editProfile/EditProfile"; // ייבוא הקומפוננטה החדשה
 import LoginPage from "./pages/login/LoginPage";
 import SignupPage from "./pages/signup/SignupPage";
 import MyFavorites from "./pages/my-favorites/MyFavorites";
 import About from "./pages/about/About";
 import CardDetails from "./components/card-details/CardDetails";
+import "./styles/styles.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -49,14 +51,13 @@ const App: React.FC = () => {
         <Route path="/" element={<Home searchQuery={searchQuery} />} />
         <Route path="/mycards" element={<MyCards />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/profile/edit" element={<EditProfilePage />} />{" "}
-        {/* הוספת הנתיב החדש */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/my-favorites" element={<MyFavorites />} />
         <Route path="/about" element={<About />} />
         <Route path="/cards/:id" element={<CardDetails />} />
       </Routes>
+      <ToastContainer />
     </>
   );
 };

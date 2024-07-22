@@ -4,6 +4,7 @@ import { TextField, Button, Grid, Typography } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { UserContext, UserContextType } from "../../context/UserContext";
+import { toast } from "react-toastify";
 
 interface ILoginForm {
   email: string;
@@ -27,14 +28,21 @@ const LoginPage: React.FC = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<ILoginForm> = (data) => {
-    login(data);
+  const onSubmit: SubmitHandler<ILoginForm> = async (data) => {
+    try {
+      await login(data);
+      toast.success("Login successful!");
+    } catch (error) {
+      toast.error("Login failed. Please check your credentials.");
+    }
   };
 
   return (
     <Grid container spacing={2} justifyContent="center">
       <Grid item xs={12}>
-        <Typography variant="h4" component="h1" gutterBottom></Typography>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Login
+        </Typography>
       </Grid>
       <Grid item xs={12}>
         <form onSubmit={handleSubmit(onSubmit)}>

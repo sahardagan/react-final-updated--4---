@@ -25,6 +25,8 @@ export interface IUserForm {
 }
 
 export interface JwtPayload {
+  profilePicture: string | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   name: any;
   _id: string;
   email: string;

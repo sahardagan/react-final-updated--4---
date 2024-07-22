@@ -1,13 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  TextField,
-  Button,
-  Container,
-  Paper,
-  Typography,
-  Grid,
-} from "@mui/material";
+import { TextField, Button, Container, Paper, Grid } from "@mui/material";
 import { UserContext, UserContextType } from "../../context/UserContext";
 import { UserProfile as UserProfileType } from "../../interfaces/users";
 
@@ -66,10 +60,7 @@ const EditProfilePage: React.FC = () => {
 
   return (
     <Container maxWidth="sm">
-      <Paper elevation={3} style={{ padding: "24px", marginTop: "20px" }}>
-        <Typography variant="h4" gutterBottom>
-          Edit Profile
-        </Typography>
+      <Paper elevation={3} style={{ padding: "24px", marginTop: "5px" }}>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
