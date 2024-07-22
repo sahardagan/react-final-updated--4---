@@ -127,7 +127,6 @@ const ProfilePage: React.FC = () => {
         </Grid>
       </Paper>
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle>Edit Profile</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
