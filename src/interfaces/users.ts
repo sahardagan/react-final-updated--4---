@@ -1,15 +1,15 @@
 export interface IUserForm {
   name: {
     first: string;
-    middle: string;
+    middle?: string;
     last: string;
   };
   phone: string;
   email: string;
   password: string;
   image?: {
-    url: string;
-    alt: string;
+    url?: string;
+    alt?: string;
   };
   address?: {
     state: string;
