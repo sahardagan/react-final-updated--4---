@@ -57,7 +57,7 @@ export interface UserProfile {
   isBusiness: boolean;
   isAdmin: boolean;
   classCode: string;
-  createdAt: string; // Or Date, depending on your backend response
+  createdAt: string;
 }
 
 export type UserProfileType = UserProfile;

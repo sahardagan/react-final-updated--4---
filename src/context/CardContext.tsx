@@ -208,7 +208,7 @@ export const CardProvider: React.FC<{ children: ReactNode }> = ({
         addCard,
         updateCard,
         fetchCards,
-        fetchCardById, // הוספת הפונקציה החדשה ל-Context
+        fetchCardById,
         error,
         fetchMyCards,
         deleteCard,

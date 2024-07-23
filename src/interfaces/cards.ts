@@ -1,4 +1,3 @@
-// interfaces.ts
 export interface Address {
   state: string;
   country: string;

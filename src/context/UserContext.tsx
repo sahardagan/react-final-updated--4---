@@ -11,7 +11,7 @@ export interface UserContextType {
   signup: (userData: IUserForm) => Promise<void>;
   login: (userData: ILoginForm) => Promise<void>;
   logout: () => void;
-  fetchUserProfile: (userId: string) => Promise<UserProfileType | null>; // עדכון סוג הפונקציה
+  fetchUserProfile: (userId: string) => Promise<UserProfileType | null>;
   updateUserProfile: (
     userId: string,
     updatedProfile: UserProfileType
@@ -33,13 +33,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<ExtendedJwtPayload | null>(null);
-  const [profile, setProfile] = useState<UserProfileType | null>(null); // הוספת מצב profile
+  const [profile, setProfile] = useState<UserProfileType | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    const decoded = jwtDecode(token) as ExtendedJwtPayload; // שימוש בממשק המורחב
+    const decoded = jwtDecode(token) as ExtendedJwtPayload;
     setUser(decoded);
   }, []);
 
@@ -62,7 +62,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         userData
       );
       localStorage.setItem("token", JSON.stringify(response.data));
-      const decoded = jwtDecode(response.data) as ExtendedJwtPayload; // שימוש בממשק המורחב
+      const decoded = jwtDecode(response.data) as ExtendedJwtPayload;
       setUser(decoded);
       navigate("/");
     } catch (error) {

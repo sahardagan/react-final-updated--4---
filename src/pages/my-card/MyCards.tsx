@@ -115,11 +115,21 @@ const MyCards: React.FC = () => {
         sx={{
           position: "fixed",
           bottom: 16,
-          right: 16,
+          left: 16,
         }}
       >
-        <Button variant="contained" color="primary" onClick={handleOpen}>
-          Add New Card +
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleOpen}
+          sx={{
+            borderRadius: "50%",
+            width: "56px",
+            height: "56px",
+            minWidth: 0,
+          }}
+        >
+          +
         </Button>
       </Box>
       <CreateCardForm open={open} handleClose={handleClose} />

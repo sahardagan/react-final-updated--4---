@@ -1,5 +1,4 @@
-// src/components/nav/Navbar.tsx
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -14,9 +13,9 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { UserContext, UserContextType } from "../../context/UserContext";
-import Logout from "../logout/Logout";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 interface NavbarProps {
   onSearch: (query: string) => void;
@@ -29,7 +28,9 @@ const Navbar: React.FC<NavbarProps> = ({
   darkMode,
   onThemeToggle,
 }) => {
-  const { user, fetchUserProfile } = useContext(UserContext) as UserContextType;
+  const { user, fetchUserProfile, logout } = useContext(
+    UserContext
+  ) as UserContextType;
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -57,13 +58,20 @@ const Navbar: React.FC<NavbarProps> = ({
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
     setSearchQuery(query);
-    onSearch(query); // Update the search query in the parent component
+    onSearch(query);
   };
 
-  const linkStyles = {
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to logout?")) {
+      logout();
+    }
+  };
+
+  const linkStyles: CSSProperties = {
     color: darkMode ? "#fff" : "#000",
     fontWeight: "bold",
     textDecoration: "none",
+    textTransform: "none",
   };
 
   return (
@@ -72,7 +80,12 @@ const Navbar: React.FC<NavbarProps> = ({
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography variant="h6">
             <Link to="/" style={linkStyles}>
-              MyApp
+              B-Card
+            </Link>
+          </Typography>
+          <Typography variant="h6" sx={{ marginLeft: 2 }}>
+            <Link to="/about" style={linkStyles}>
+              About
             </Link>
           </Typography>
         </Box>
@@ -121,7 +134,9 @@ const Navbar: React.FC<NavbarProps> = ({
               <IconButton color="inherit" component={Link} to="/profile">
                 <Avatar alt={user.name?.first} src={profilePicture || ""} />
               </IconButton>
-              <Logout />
+              <IconButton color="inherit" onClick={handleLogout}>
+                <LogoutIcon />
+              </IconButton>
             </>
           ) : (
             <>
@@ -129,7 +144,7 @@ const Navbar: React.FC<NavbarProps> = ({
                 Login
               </Button>
               <Button sx={linkStyles} component={Link} to="/signup">
-                Signup
+                Register
               </Button>
             </>
           )}
