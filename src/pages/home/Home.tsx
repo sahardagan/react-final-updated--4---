@@ -10,15 +10,29 @@ import {
   Typography,
   Pagination,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import PhoneIcon from "@mui/icons-material/Phone";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { CardContext, CardContextType } from "../../context/CardContext";
 import { UserContext, UserContextType } from "../../context/UserContext";
-import CardDetailsDialog from "../../components/card-details/CardDetails"; // ייבוא קומפוננטת CardDetailsDialog
+import CardDetailsDialog from "../../components/card-details/CardDetails";
 
 interface HomeProps {
   searchQuery: string;
 }
+
+const StyledCard = styled(MuiCard)(({ theme }) => ({
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  borderRadius: 3,
+  boxShadow: theme.shadows[3],
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+  "&:hover": {
+    transform: "scale(1.05)",
+    boxShadow: theme.shadows[6],
+  },
+}));
 
 const Home: React.FC<HomeProps> = ({ searchQuery }) => {
   const { cards, favoriteCards, fetchCards, toggleCardLike } = useContext(
@@ -50,12 +64,10 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
 
   const handleDetailsClose = () => setDetailsOpen(false);
 
-  // Filter cards based on search query
   const filteredCards = cards.filter((card) =>
     card.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Calculate the cards to display based on the current page
   const indexOfLastCard = currentPage * itemsPerPage;
   const indexOfFirstCard = indexOfLastCard - itemsPerPage;
   const currentCards = filteredCards.slice(indexOfFirstCard, indexOfLastCard);
@@ -73,15 +85,7 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
 
               return (
                 <Grid item xs={12} sm={6} md={4} key={index}>
-                  <MuiCard
-                    sx={{
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      borderRadius: 3,
-                      boxShadow: 3,
-                    }}
-                  >
+                  <StyledCard>
                     <CardMedia
                       component="img"
                       height="180"
@@ -123,7 +127,7 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
                         </IconButton>
                       </CardActions>
                     )}
-                  </MuiCard>
+                  </StyledCard>
                 </Grid>
               );
             })}

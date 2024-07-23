@@ -11,6 +11,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import CreateCardForm from "../create-card/CreateCard";
 import { useCardContext } from "../../context/CardContext";
 import EditIcon from "@mui/icons-material/Edit";
@@ -19,6 +20,16 @@ import EditCardForm from "../../components/editCard/EditCardForm";
 import CardDetailsDialog from "../../components/card-details/CardDetails";
 import { Card } from "../../interfaces/cards";
 import { toast } from "react-toastify";
+
+const StyledCard = styled(MuiCard)(({ theme }) => ({
+  maxWidth: 345,
+  margin: "auto",
+  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+  "&:hover": {
+    transform: "scale(1.05)",
+    boxShadow: theme.shadows[4],
+  },
+}));
 
 const MyCards: React.FC = () => {
   const { fetchMyCards, cards, deleteCard } = useCardContext();
@@ -72,7 +83,7 @@ const MyCards: React.FC = () => {
           {cards &&
             cards.map((data, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
-                <MuiCard sx={{ maxWidth: 345, margin: "auto" }}>
+                <StyledCard>
                   <CardMedia
                     component="img"
                     height="140"
@@ -106,7 +117,7 @@ const MyCards: React.FC = () => {
                       <DeleteIcon />
                     </IconButton>
                   </CardActions>
-                </MuiCard>
+                </StyledCard>
               </Grid>
             ))}
         </Grid>

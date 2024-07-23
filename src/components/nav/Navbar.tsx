@@ -68,14 +68,22 @@ const Navbar: React.FC<NavbarProps> = ({
   };
 
   const linkStyles: CSSProperties = {
-    color: darkMode ? "#fff" : "#000",
+    color: darkMode ? "#fff" : "#fff",
     fontWeight: "bold",
     textDecoration: "none",
     textTransform: "none",
   };
 
   return (
-    <AppBar position="static" sx={{ height: 80 }}>
+    <AppBar
+      position="static"
+      sx={{
+        height: 80,
+        display: "flex",
+        flexDirection: "normal",
+        justifyContent: "center",
+      }}
+    >
       <Toolbar sx={{ minHeight: 80, justifyContent: "space-between" }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography variant="h6">
