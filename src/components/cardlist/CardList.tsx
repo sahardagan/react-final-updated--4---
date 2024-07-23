@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllCards, Card } from "../api/cards";
+import { getAllCards, Card } from "../../api/cards";
 
 const CardsList: React.FC = () => {
   const [cards, setCards] = useState<Card[]>([]);

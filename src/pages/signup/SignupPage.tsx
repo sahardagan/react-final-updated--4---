@@ -50,6 +50,7 @@ const SignupPage: React.FC = () => {
     control,
     // formState: { errors },
   } = useForm<IUserForm>({
+    //@ts-ignore
     resolver: yupResolver(schema),
     defaultValues: {
       name: {

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/nav/Navbar";
 import Home from "./pages/home/Home";
-import MyCards from "./components/MyCards";
+import MyCards from "./pages/my-card/MyCards";
 import ProfilePage from "./pages/profile/ProfilePage";
 import LoginPage from "./pages/login/LoginPage";
 import SignupPage from "./pages/signup/SignupPage";
@@ -55,7 +55,18 @@ const App: React.FC = () => {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/my-favorites" element={<MyFavorites />} />
         <Route path="/about" element={<About />} />
-        <Route path="/cards/:id" element={<CardDetails />} />
+        <Route
+          path="/cards/:id"
+          element={
+            <CardDetails
+              cardId={""}
+              open={false}
+              handleClose={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          }
+        />
       </Routes>
       <ToastContainer />
     </>

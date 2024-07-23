@@ -42,21 +42,3 @@
 .read-the-docs {
   color: #888;
 }
-
-body.dark-mode {
-  background-color: #121212;
-  color: #ffffff;
-}
-
-body.light-mode {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-.dark-mode .MuiAppBar-root {
-  background-color: #333;
-}
-
-.light-mode .MuiAppBar-root {
-  background-color: #3f51b5;
-}

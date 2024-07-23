@@ -33,7 +33,7 @@ export interface Card {
 }
 
 export interface FormData {
-  _id: string;
+  _id?: string;
   title: string;
   subtitle: string;
   description: string;

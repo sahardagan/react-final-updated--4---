@@ -1,4 +1,3 @@
-// src/pages/Home.tsx
 import React, { useContext, useEffect, useState } from "react";
 import {
   Card as MuiCard,
@@ -11,7 +10,7 @@ import {
   Typography,
   Pagination,
 } from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info";
+import PhoneIcon from "@mui/icons-material/Phone";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { CardContext, CardContextType } from "../../context/CardContext";
 import { UserContext, UserContextType } from "../../context/UserContext";
@@ -88,7 +87,8 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
                       height="180"
                       image={data.image.url}
                       alt={data.image.alt}
-                      sx={{ objectFit: "cover" }}
+                      sx={{ objectFit: "cover", cursor: "pointer" }}
+                      onClick={() => handleDetailsOpen(data._id)}
                     />
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Typography
@@ -106,10 +106,12 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
                     {shouldDisplayActions && (
                       <CardActions>
                         <IconButton
-                          aria-label="info"
-                          onClick={() => handleDetailsOpen(data._id)}
+                          aria-label="phone"
+                          onClick={() =>
+                            window.open(`tel:${data.phone}`, "_self")
+                          }
                         >
-                          <InfoIcon />
+                          <PhoneIcon />
                         </IconButton>
                         <IconButton
                           aria-label="like"

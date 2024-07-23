@@ -10,7 +10,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   TextField,
 } from "@mui/material";
 import { UserContext, UserContextType } from "../../context/UserContext";

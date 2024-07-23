@@ -11,14 +11,13 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import CreateCardForm from "../pages/create-card/CreateCard";
-import { useCardContext } from "../context/CardContext";
-import InfoIcon from "@mui/icons-material/Info";
+import CreateCardForm from "../create-card/CreateCard";
+import { useCardContext } from "../../context/CardContext";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditCardForm from "./editCard/EditCardForm";
-import CardDetailsDialog from "../components/card-details/CardDetails";
-import { Card } from "../interfaces/cards";
+import EditCardForm from "../../components/editCard/EditCardForm";
+import CardDetailsDialog from "../../components/card-details/CardDetails";
+import { Card } from "../../interfaces/cards";
 import { toast } from "react-toastify";
 
 const MyCards: React.FC = () => {
@@ -79,7 +78,8 @@ const MyCards: React.FC = () => {
                     height="140"
                     image={data.image.url}
                     alt={data.image.alt}
-                    sx={{ objectFit: "cover" }}
+                    sx={{ objectFit: "cover", cursor: "pointer" }}
+                    onClick={() => handleDetailsOpen(data._id)}
                   />
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
@@ -93,12 +93,6 @@ const MyCards: React.FC = () => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <IconButton
-                      aria-label="info"
-                      onClick={() => handleDetailsOpen(data._id)}
-                    >
-                      <InfoIcon />
-                    </IconButton>
                     <IconButton
                       aria-label="edit"
                       onClick={() => handleEditOpen(data)}

@@ -23,7 +23,6 @@ const EditCardForm: React.FC<EditCardFormProps> = ({
   open,
   handleClose,
 }) => {
-  // @ts-ignore
   const newValues: FormData = {
     title: defaultValues.title,
     subtitle: defaultValues.subtitle,
@@ -47,8 +46,6 @@ const EditCardForm: React.FC<EditCardFormProps> = ({
   const { updateCard } = useContext(CardContext) as CardContextType;
 
   const onSubmit = (data: FormData) => {
-    // @ts-ignore
-
     updateCard(data, defaultValues._id);
     handleClose();
     setTimeout(() => {
