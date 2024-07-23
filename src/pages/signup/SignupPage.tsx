@@ -11,6 +11,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IUserForm } from "../../interfaces/users";
 import { UserContext, UserContextType } from "../../context/UserContext";
+import { schema } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js";
 
 const SignupPage: React.FC = () => {
   const { signup } = useContext(UserContext) as UserContextType;
