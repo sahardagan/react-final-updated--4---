@@ -42,53 +42,48 @@ const CardDetailsDialog: React.FC<CardDetailsDialogProps> = ({
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle>Card Details</DialogTitle>
       <DialogContent>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            textAlign: "center",
-          }}
-        >
-          <img
-            src={card.image.url}
-            alt={card.image.alt}
-            style={{
-              maxHeight: "250px",
-              objectFit: "cover",
-            }}
-          />
-          <Grid container spacing={2} sx={{ mt: 2 }}>
-            <Grid item xs={12}>
-              <Typography variant="body1">{card.title}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body1">{card.subtitle}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body1">{card.description}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6">Phone</Typography>
-              <Typography variant="body1">{card.phone}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6">Email</Typography>
-              <Typography variant="body1">{card.email}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6">Web</Typography>
-              <Typography variant="body1">{card.web}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6">Address</Typography>
-              <Typography variant="body1">
-                {card.address.street}, {card.address.city}, {card.address.state}
-                , {card.address.country}, {card.address.zip}
-              </Typography>
-            </Grid>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid item xs={12} md={6}>
+            <Box
+              component="img"
+              src={card.image.url}
+              alt={card.image.alt}
+              sx={{
+                width: "100%",
+                height: "auto",
+                maxHeight: "250px",
+                objectFit: "cover",
+                borderRadius: 2,
+              }}
+            />
           </Grid>
-        </Box>
+          <Grid item xs={12} md={6}>
+            <Typography variant="h6">{card.title}</Typography>
+            <Typography variant="subtitle1" gutterBottom>
+              {card.subtitle}
+            </Typography>
+            <Typography variant="body1" paragraph>
+              {card.description}
+            </Typography>
+            <Typography variant="h6">Phone</Typography>
+            <Typography variant="body1" paragraph>
+              {card.phone}
+            </Typography>
+            <Typography variant="h6">Email</Typography>
+            <Typography variant="body1" paragraph>
+              {card.email}
+            </Typography>
+            <Typography variant="h6">Web</Typography>
+            <Typography variant="body1" paragraph>
+              {card.web}
+            </Typography>
+            <Typography variant="h6">Address</Typography>
+            <Typography variant="body1" paragraph>
+              {card.address.street}, {card.address.city}, {card.address.state},{" "}
+              {card.address.country}, {card.address.zip}
+            </Typography>
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Close</Button>

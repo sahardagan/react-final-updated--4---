@@ -10,12 +10,20 @@ import {
   IconButton,
   Avatar,
   Box,
+  useMediaQuery,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  Divider,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { UserContext, UserContextType } from "../../context/UserContext";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import LogoutIcon from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 
 interface NavbarProps {
   onSearch: (query: string) => void;
@@ -33,6 +41,10 @@ const Navbar: React.FC<NavbarProps> = ({
   ) as UserContextType;
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -67,54 +79,80 @@ const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const linkStyles: CSSProperties = {
-    color: darkMode ? "#fff" : "#fff",
+    color: darkMode ? "#fff" : "#000",
     fontWeight: "bold",
     textDecoration: "none",
     textTransform: "none",
   };
 
   return (
-    <AppBar
-      position="static"
-      sx={{
-        height: 80,
-        display: "flex",
-        flexDirection: "normal",
-        justifyContent: "center",
-      }}
-    >
-      <Toolbar sx={{ minHeight: 80, justifyContent: "space-between" }}>
+    <AppBar position="static">
+      <Toolbar
+        sx={{
+          justifyContent: "space-between",
+          paddingLeft: { xs: "10px", md: "50px" },
+          paddingRight: { xs: "10px", md: "50px" },
+        }}
+      >
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="h6">
+          <Typography
+            variant="h6"
+            sx={{ fontSize: { xs: "1rem", md: "1.25rem" } }}
+          >
             <Link to="/" style={linkStyles}>
               B-Card
             </Link>
           </Typography>
-          <Typography variant="h6" sx={{ marginLeft: 2 }}>
-            <Link to="/about" style={linkStyles}>
-              About
-            </Link>
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            flexGrow: 1,
-            justifyContent: "center",
-          }}
-        >
-          {user && (
+          {!isMobile && (
             <>
-              <Button sx={linkStyles} component={Link} to="/my-favorites">
-                Favourites
-              </Button>
-              <Button sx={linkStyles} component={Link} to="/mycards">
-                My Cards
-              </Button>
+              <Typography
+                variant="h6"
+                sx={{
+                  marginLeft: 2,
+                  fontSize: { xs: "0.875rem", md: "1rem" },
+                }}
+              >
+                <Link to="/about" style={linkStyles}>
+                  About
+                </Link>
+              </Typography>
+              {user && (
+                <>
+                  <Button
+                    sx={{
+                      ...linkStyles,
+                      fontSize: { xs: "0.875rem", md: "1rem" },
+                    }}
+                    component={Link}
+                    to="/my-favorites"
+                  >
+                    Favourites
+                  </Button>
+                  <Button
+                    sx={{
+                      ...linkStyles,
+                      fontSize: { xs: "0.875rem", md: "1rem" },
+                    }}
+                    component={Link}
+                    to="/mycards"
+                  >
+                    My Cards
+                  </Button>
+                </>
+              )}
             </>
           )}
+        </Box>
+        {!isMobile && (
           <TextField
             placeholder="Search"
             value={searchQuery}
@@ -128,32 +166,89 @@ const Navbar: React.FC<NavbarProps> = ({
             }}
             sx={{
               marginX: 2,
-              width: 200,
+              width: { xs: "150px", md: "200px" },
               input: { color: darkMode ? "#fff" : "#000" },
             }}
           />
-        </Box>
+        )}
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <IconButton color="inherit" onClick={onThemeToggle}>
             {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
           {user ? (
             <>
-              <IconButton color="inherit" component={Link} to="/profile">
-                <Avatar alt={user.name?.first} src={profilePicture || ""} />
-              </IconButton>
-              <IconButton color="inherit" onClick={handleLogout}>
-                <LogoutIcon />
-              </IconButton>
+              {!isMobile ? (
+                <>
+                  <IconButton color="inherit" component={Link} to="/profile">
+                    <Avatar alt={user.name?.first} src={profilePicture || ""} />
+                  </IconButton>
+                  <IconButton color="inherit" onClick={handleLogout}>
+                    <LogoutIcon />
+                  </IconButton>
+                </>
+              ) : (
+                <>
+                  <IconButton color="inherit" onClick={handleMenu}>
+                    <MenuIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem component={Link} to="/profile">
+                      <ListItemIcon>
+                        <AccountCircle fontSize="small" />
+                      </ListItemIcon>
+                      Profile
+                    </MenuItem>
+                    <MenuItem onClick={handleLogout}>
+                      <ListItemIcon>
+                        <LogoutIcon fontSize="small" />
+                      </ListItemIcon>
+                      Logout
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem component={Link} to="/my-favorites">
+                      Favourites
+                    </MenuItem>
+                    <MenuItem component={Link} to="/mycards">
+                      My Cards
+                    </MenuItem>
+                  </Menu>
+                </>
+              )}
             </>
           ) : (
             <>
-              <Button sx={linkStyles} component={Link} to="/login">
-                Login
-              </Button>
-              <Button sx={linkStyles} component={Link} to="/signup">
-                Register
-              </Button>
+              {!isMobile ? (
+                <>
+                  <Button sx={linkStyles} component={Link} to="/login">
+                    Login
+                  </Button>
+                  <Button sx={linkStyles} component={Link} to="/signup">
+                    Register
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <IconButton color="inherit" onClick={handleMenu}>
+                    <MenuIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem component={Link} to="/login">
+                      Login
+                    </MenuItem>
+                    <MenuItem component={Link} to="/signup">
+                      Register
+                    </MenuItem>
+                  </Menu>
+                </>
+              )}
             </>
           )}
         </Box>
