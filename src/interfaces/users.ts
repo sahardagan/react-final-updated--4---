@@ -5,8 +5,8 @@ export interface IUserForm {
     last: string;
   };
   phone: string;
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
   image?: {
     url?: string;
     alt?: string;

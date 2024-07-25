@@ -4,10 +4,10 @@ import { Card, FormData } from "../interfaces/cards";
 
 export interface CardContextType {
   cards: Card[];
-  favoriteCards: Card[];
+  myCards: Card[];
   addCard: (newCard: FormData) => Promise<void>;
   updateCard: (updatedCard: FormData, id: string) => Promise<void>;
-  deleteCard: (cardId: string, bizNumber: number) => void;
+  deleteCard: (cardId: string, bizNumber: number) => Promise<boolean>;
   fetchCards: () => void;
   fetchCardById: (id: string) => Promise<Card | null>;
   error: string | null;
@@ -31,7 +31,7 @@ export const CardProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [cards, setCards] = useState<Card[]>([]);
-  const [favoriteCards, setFavoriteCards] = useState<Card[]>([]);
+  const [myCards, setMyCards] = useState<Card[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const fetchCards = async () => {
@@ -132,11 +132,13 @@ export const CardProvider: React.FC<{ children: ReactNode }> = ({
         }
       );
 
-      setCards(cards.filter((card) => card._id !== cardId));
+      setMyCards(myCards.filter((card) => card._id !== cardId));
       setError(null);
+      return true;
     } catch (error) {
       console.error("Error deleting card:", error);
       setError("Error deleting card");
+      return false;
     }
   };
 
@@ -150,7 +152,7 @@ export const CardProvider: React.FC<{ children: ReactNode }> = ({
           },
         }
       );
-      setCards(response.data);
+      setMyCards(response.data);
       setError(null);
     } catch (error) {
       console.error("Error fetching cards:", error);
@@ -159,44 +161,32 @@ export const CardProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const toggleCardLike = async (id: string) => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setError("No authentication token found");
-      return;
-    }
-
-    const cleanedToken = token.replace(/^"|"$/g, "");
-
     try {
+      const token = JSON.parse(localStorage.getItem("token") || "null");
+
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
       const response = await axios.patch(
         `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${id}`,
         {},
         {
           headers: {
-            "x-auth-token": cleanedToken,
-            "Content-Type": "application/json",
+            "X-Auth-Token": token,
           },
         }
       );
 
-      const updatedCard = response.data;
+      setError(null);
+
+      const updatedCard = await response.data;
       setCards((prevCards) =>
         prevCards.map((card) => (card._id === id ? updatedCard : card))
       );
-
-      setFavoriteCards((prevFavorites) => {
-        if (prevFavorites.some((card) => card._id === id)) {
-          return prevFavorites.filter((card) => card._id !== id);
-        } else {
-          return [...prevFavorites, updatedCard];
-        }
-      });
-
-      setError(null);
     } catch (error) {
-      // @ts-ignore
-      console.error("Error response:", error.response?.data);
-      setError("Authentication Error: Please Login");
+      console.error("Error toggling card like:", error);
+      setError("Error toggling card like");
     }
   };
 
@@ -204,7 +194,6 @@ export const CardProvider: React.FC<{ children: ReactNode }> = ({
     <CardContext.Provider
       value={{
         cards,
-        favoriteCards,
         addCard,
         updateCard,
         fetchCards,
@@ -213,6 +202,7 @@ export const CardProvider: React.FC<{ children: ReactNode }> = ({
         fetchMyCards,
         deleteCard,
         toggleCardLike,
+        myCards,
       }}
     >
       {children}

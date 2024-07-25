@@ -11,7 +11,37 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IUserForm } from "../../interfaces/users";
 import { UserContext, UserContextType } from "../../context/UserContext";
-import { schema } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js";
+import * as yup from "yup";
+
+// Define the schema using Yup
+const schema = yup
+  .object({
+    name: yup.object({
+      first: yup.string().required("First name is required"),
+      middle: yup.string(),
+      last: yup.string().required("Last name is required"),
+    }),
+    phone: yup.string().required("Phone number is required"),
+    email: yup.string().email("Invalid email").required("Email is required"),
+    password: yup
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .required("Password is required"),
+    image: yup.object({
+      url: yup.string().url("Invalid URL"),
+      alt: yup.string(),
+    }),
+    address: yup.object({
+      state: yup.string().required("State is required"),
+      country: yup.string().required("Country is required"),
+      city: yup.string().required("City is required"),
+      street: yup.string().required("Street is required"),
+      houseNumber: yup.number().required("House number is required"),
+      zip: yup.number().required("ZIP code is required"),
+    }),
+    isBusiness: yup.boolean().required(),
+  })
+  .required();
 
 const SignupPage: React.FC = () => {
   const { signup } = useContext(UserContext) as UserContextType;
@@ -20,6 +50,7 @@ const SignupPage: React.FC = () => {
     control,
     // formState: { errors },
   } = useForm<IUserForm>({
+    // @ts-ignore
     resolver: yupResolver(schema),
     defaultValues: {
       name: {
@@ -42,12 +73,9 @@ const SignupPage: React.FC = () => {
         houseNumber: 0,
         zip: 0,
       },
-      isAdmin: false,
       isBusiness: false,
-      classCode: "",
     },
   });
-
   const onSubmit: SubmitHandler<IUserForm> = (data) => {
     console.log(data);
     signup(data);

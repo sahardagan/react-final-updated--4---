@@ -30,8 +30,9 @@ const LoginPage: React.FC = () => {
 
   const onSubmit: SubmitHandler<ILoginForm> = async (data) => {
     try {
-      await login(data);
-      toast.success("Login successful!");
+      const isSuccess = await login(data);
+      if (isSuccess) toast.success("Login successful");
+      if (!isSuccess) toast.error("password or email are not valid");
     } catch (error) {
       toast.error("Login failed. Please check your credentials.");
     }

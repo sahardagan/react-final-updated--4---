@@ -46,6 +46,7 @@ const CreateCardForm: React.FC<CreateCardProps> = ({ open, handleClose }) => {
 
     setFormData((prevState) => {
       const newState = { ...prevState };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let currentLevel: any = newState;
 
       for (let i = 0; i < keys.length - 1; i++) {

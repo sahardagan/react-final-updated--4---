@@ -13,11 +13,16 @@ import {
   TextField,
 } from "@mui/material";
 import { UserContext, UserContextType } from "../../context/UserContext";
-import { UserProfile as UserProfileType } from "../../interfaces/users";
+import {
+  IUserForm,
+  UserProfile as UserProfileType,
+} from "../../interfaces/users";
 import { toast } from "react-toastify";
 
 const ProfilePage: React.FC = () => {
-  const { user, fetchUserProfile } = useContext(UserContext) as UserContextType;
+  const { user, fetchUserProfile, updateUserProfile } = useContext(
+    UserContext
+  ) as UserContextType;
   const [profile, setProfile] = useState<UserProfileType | null>(null);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<UserProfileType | null>(null);
@@ -47,24 +52,50 @@ const ProfilePage: React.FC = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (form) {
-      setForm((prevForm) => ({
-        ...prevForm!,
-        [name]: value,
-        address: {
-          ...prevForm!.address,
-          [name]: value,
-        },
-      }));
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add logic to save the updated profile
-    console.log("Profile updated:", form);
+
+    console.log(form);
+    if (!user || !form) return;
+
+    const userProfile: IUserForm = {
+      name: {
+        first: form.name.first,
+        middle: form.name.middle,
+        last: form.name.last,
+      },
+      phone: form.phone,
+      image: { url: form.image.url, alt: form.image.alt },
+      address: {
+        street: form.address.street,
+        houseNumber: +form.address.houseNumber,
+        city: form.address.city,
+        state: form.address.state,
+        country: form.address.country,
+        zip: +form.address.zip,
+      },
+    };
+
+    await updateUserProfile(user._id, userProfile);
+    const fetchProfile = async () => {
+      if (user?._id) {
+        try {
+          const userProfile = await fetchUserProfile(user._id);
+          if (userProfile) {
+            setProfile(userProfile);
+            setForm(userProfile);
+          } else {
+            console.log("User profile not found");
+          }
+        } catch (error) {
+          console.error("Error fetching user profile:", error);
+        }
+      } else {
+        console.log("User does not have an _id");
+      }
+    };
+
+    fetchProfile();
     handleClose();
     toast.success("Profile updated successfully!");
   };
@@ -153,20 +184,6 @@ const ProfilePage: React.FC = () => {
                     setForm({
                       ...form!,
                       name: { ...form!.name, last: e.target.value },
-                    })
-                  }
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  name="email"
-                  value={form?.email}
-                  onChange={(e) =>
-                    setForm({
-                      ...form!,
-                      email: e.target.value,
                     })
                   }
                 />

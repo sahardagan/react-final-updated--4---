@@ -9,12 +9,12 @@ export interface UserContextType {
   user: ExtendedJwtPayload | null;
   setUser: React.Dispatch<React.SetStateAction<ExtendedJwtPayload | null>>;
   signup: (userData: IUserForm) => Promise<void>;
-  login: (userData: ILoginForm) => Promise<void>;
+  login: (userData: ILoginForm) => Promise<boolean>;
   logout: () => void;
   fetchUserProfile: (userId: string) => Promise<UserProfileType | null>;
   updateUserProfile: (
     userId: string,
-    updatedProfile: UserProfileType
+    updatedProfile: IUserForm
   ) => Promise<void>;
   profile: UserProfileType | null;
   setProfile: React.Dispatch<React.SetStateAction<UserProfileType | null>>;
@@ -65,8 +65,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       const decoded = jwtDecode(response.data) as ExtendedJwtPayload;
       setUser(decoded);
       navigate("/");
+      return true;
     } catch (error) {
       console.error("Error logging in:", error);
+      return false;
     }
   };
 
@@ -99,7 +101,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
   const updateUserProfile = async (
     userId: string,
-    updatedProfile: UserProfileType
+    updatedProfile: IUserForm
   ): Promise<void> => {
     try {
       const token = localStorage.getItem("token");

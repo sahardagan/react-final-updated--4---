@@ -35,7 +35,7 @@ const StyledCard = styled(MuiCard)(({ theme }) => ({
 }));
 
 const Home: React.FC<HomeProps> = ({ searchQuery }) => {
-  const { cards, favoriteCards, fetchCards, toggleCardLike } = useContext(
+  const { cards, fetchCards, toggleCardLike } = useContext(
     CardContext
   ) as CardContextType;
   const { user } = useContext(UserContext) as UserContextType;
@@ -79,9 +79,9 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
         <Grid container spacing={3}>
           {currentCards &&
             currentCards.map((data, index) => {
-              const isFavorite = favoriteCards.some(
-                (favCard) => favCard._id === data._id
-              );
+              const isFavorite =
+                data.likes &&
+                data.likes.some((stringId) => stringId === user?._id);
 
               return (
                 <Grid item xs={12} sm={6} md={4} key={index}>

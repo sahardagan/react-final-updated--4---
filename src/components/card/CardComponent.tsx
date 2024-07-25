@@ -11,13 +11,17 @@ import {
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-const CardComponent = ({ card }: { card: CardType }) => {
-  const { toggleCardLike, favoriteCards } = useCardContext();
+interface ICardComponentProps {
+  card: CardType;
+  onRemoveFavorite: (id: string) => void;
+}
 
-  const isFavorite = favoriteCards.some((favCard) => favCard._id === card._id);
+const CardComponent = ({ card, onRemoveFavorite }: ICardComponentProps) => {
+  const { toggleCardLike } = useCardContext();
 
   const handleLikeClick = () => {
     toggleCardLike(card._id);
+    onRemoveFavorite(card._id);
   };
 
   return (
@@ -42,7 +46,7 @@ const CardComponent = ({ card }: { card: CardType }) => {
       </CardContent>
       <CardActions>
         <IconButton aria-label="like" onClick={handleLikeClick}>
-          <FavoriteIcon sx={{ color: isFavorite ? "red" : "gray" }} />
+          <FavoriteIcon sx={{ color: "red" }} />
         </IconButton>
       </CardActions>
     </Card>

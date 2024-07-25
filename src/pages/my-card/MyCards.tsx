@@ -32,7 +32,7 @@ const StyledCard = styled(MuiCard)(({ theme }) => ({
 }));
 
 const MyCards: React.FC = () => {
-  const { fetchMyCards, cards, deleteCard } = useCardContext();
+  const { fetchMyCards, deleteCard, myCards } = useCardContext();
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -57,8 +57,10 @@ const MyCards: React.FC = () => {
 
   const handleDelete = async (cardId: string, bizNumber: number) => {
     try {
-      await deleteCard(cardId, bizNumber);
-      toast.success("Card deleted successfully!");
+      const deletedCard = await deleteCard(cardId, bizNumber);
+      console.log(deleteCard);
+      if (deletedCard) toast.success("Card deleted successfully!");
+      if (!deletedCard) return toast.error("Card not deleted,failed");
     } catch (error) {
       toast.error("Failed to delete the card.");
     }
@@ -80,8 +82,8 @@ const MyCards: React.FC = () => {
       </Box>
       <Container>
         <Grid container spacing={3} justifyContent="center">
-          {cards &&
-            cards.map((data, index) => (
+          {myCards &&
+            myCards.map((data, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
                 <StyledCard>
                   <CardMedia
