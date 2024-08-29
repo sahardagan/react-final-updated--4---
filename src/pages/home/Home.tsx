@@ -144,8 +144,9 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
             "& .MuiPaginationItem-root": {
               width: "70px",
               backgroundColor: "#fff",
-              color: "green",
-              fontSize: 22, // כאן הגדרת הצבע תעבוד עבור הפריטים הפנימיים של ה-Pagination
+              color: "black",
+              fontSize: 22,
+              // כאן הגדרת הצבע תעבוד עבור הפריטים הפנימיים של ה-Pagination
             },
           }}
         />
