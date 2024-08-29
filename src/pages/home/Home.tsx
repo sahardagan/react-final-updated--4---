@@ -136,7 +136,7 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
           count={pageCount}
           page={currentPage}
           onChange={handlePageChange}
-          color="secondary"
+          color="primary"
           sx={{
             marginTop: 4,
             display: "flex",
