@@ -88,6 +88,7 @@ const Navbar: React.FC<NavbarProps> = ({
   };
 
   const linkStyles: CSSProperties = {
+    padding: "0 25px",
     color: darkMode ? "#fff" : "#000",
     fontWeight: "bold",
     textDecoration: "none",
