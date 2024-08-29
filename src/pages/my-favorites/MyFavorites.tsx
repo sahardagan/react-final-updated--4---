@@ -29,17 +29,7 @@ const MyFavorites = () => {
 
   return (
     <Container>
-      <Typography
-        variant="h4"
-        component="h2"
-        gutterBottom
-        sx={{
-          margin: "65px 0", // margin של 10px מלמעלה ומלמטה
-          display: "flex",
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
+      <Typography variant="h4" component="h2" gutterBottom>
         My Favorite Cards
       </Typography>
       <Grid container spacing={3}>

@@ -136,16 +136,16 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
           count={pageCount}
           page={currentPage}
           onChange={handlePageChange}
-          color="primary"
+          color="secondary"
           sx={{
-            marginTop: 5,
+            marginTop: 4,
             display: "flex",
             justifyContent: "center",
             "& .MuiPaginationItem-root": {
-              color: "#09ace0",
-              backgroundColor: "#1F262A",
               width: "70px",
-              fontSize: "21px", // כאן הגדרת הצבע תעבוד עבור הפריטים הפנימיים של ה-Pagination
+              backgroundColor: "#fff",
+              color: "green",
+              fontSize: 22, // כאן הגדרת הצבע תעבוד עבור הפריטים הפנימיים של ה-Pagination
             },
           }}
         />
